@@ -1,3 +1,5 @@
+require 'yaml'
+
 class Robot
   @@x_min, @@x_max, @@y_min, @@y_max = 0,5,0,5
   @@orientations = %w(NORTH EAST SOUTH WEST)
@@ -30,6 +32,21 @@ class Robot
 
   def right
     turn(1)
+    self
+  end
+
+  def input(yaml_commands_file)
+    commands = YAML.load(yaml_commands_file)
+    commands.each do |line|
+      array = line.split(' ')
+      method = array.first.downcase.to_sym
+      if method == :place
+        args = array.last.split(',')
+        send(method, args[0].to_i, args[1].to_i, args[2])
+      else
+        send(method)
+      end
+    end
     self
   end
 

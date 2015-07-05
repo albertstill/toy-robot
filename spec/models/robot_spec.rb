@@ -55,6 +55,22 @@ describe Robot do
     end
   end
 
+  describe '#input' do
+    it 'commands_1' do
+      expect(Robot.new.input(File.open("./spec/fixtures/commands_1.yml")).report)
+        .to eq "0,1,NORTH"
+    end
+
+    it 'commands_2' do
+      expect(Robot.new.input(File.open("./spec/fixtures/commands_2.yml")).report)
+        .to eq "0,0,WEST"
+    end
+
+    it 'commands_3' do
+      expect(Robot.new.input(File.open("./spec/fixtures/commands_3.yml")).report)
+        .to eq "3,3,NORTH"
+    end
+  end
   
   describe '#valid_position?' do
     describe 'invalid examples' do
