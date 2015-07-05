@@ -37,6 +37,24 @@ describe Robot do
     end
   end
 
+  describe '#left & #right' do
+    let(:robot) { Robot.new.place(3,3,'NORTH') }
+
+    it 'turns left 360 degrees / 4 times' do
+      robot.left; expect(robot.report).to eq "3,3,WEST"
+      robot.left; expect(robot.report).to eq "3,3,SOUTH"
+      robot.left; expect(robot.report).to eq "3,3,EAST"
+      robot.left; expect(robot.report).to eq "3,3,NORTH"
+    end
+
+    it 'turns right 360 degrees / 4 times' do
+      robot.right; expect(robot.report).to eq "3,3,EAST"
+      robot.right; expect(robot.report).to eq "3,3,SOUTH"
+      robot.right; expect(robot.report).to eq "3,3,WEST"
+      robot.right; expect(robot.report).to eq "3,3,NORTH"
+    end
+  end
+
   
   describe '#valid_position?' do
     describe 'invalid examples' do

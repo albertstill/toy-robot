@@ -22,6 +22,17 @@ class Robot
     end
     self
   end
+
+  def left
+    turn(-1)
+    self
+  end
+
+  def right
+    turn(1)
+    self
+  end
+
   def report
     if has_position?
       "#{@x},#{@y},#{@orientation}"
@@ -31,6 +42,11 @@ class Robot
   end
 
   private
+
+  def turn(times)
+    return unless has_position?
+    @orientation = @@orientations[(@@orientations.index(@orientation) + times ) % @@orientations.length]
+  end
 
   def valid_position?(x, y, orientation)
     x.is_a?(Integer) && y.is_a?(Integer) && orientation.is_a?(String) &&
