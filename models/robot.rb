@@ -7,6 +7,21 @@ class Robot
     self
   end
 
+  def move
+    return self unless has_position?
+
+    case @orientation
+    when "NORTH"
+      @y += 1 if valid_y?(@y+1)
+    when "EAST"
+      @x += 1 if valid_x?(@x+1)
+    when "SOUTH"
+      @y -= 1 if valid_y?(@y-1)
+    when "WEST"
+      @x -= 1 if valid_x?(@x-1)
+    end
+    self
+  end
   def report
     if has_position?
       "#{@x},#{@y},#{@orientation}"

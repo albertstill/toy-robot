@@ -11,6 +11,32 @@ describe Robot do
     end
   end
 
+  describe '#move' do
+    it 'moves north' do
+      expect(Robot.new.place(3,3,'NORTH').move.report).to eq "3,4,NORTH"
+    end
+    it 'moves east' do
+      expect(Robot.new.place(1,1,'EAST').move.report).to eq "2,1,EAST"
+    end
+    it 'moves south' do
+      expect(Robot.new.place(1,1,'SOUTH').move.report).to eq "1,0,SOUTH"
+    end
+    it 'moves west' do
+      expect(Robot.new.place(1,1,'WEST').move.report).to eq "0,1,WEST"
+    end
+
+    it 'ignores moves that would take it over a border' do
+      expect(Robot.new.place(5,5,'NORTH').move.report).to eq "5,5,NORTH"
+      expect(Robot.new.place(5,3,'EAST').move.report).to eq "5,3,EAST"
+      expect(Robot.new.place(1,0,'SOUTH').move.report).to eq "1,0,SOUTH"
+      expect(Robot.new.place(0,3,'WEST').move.report).to eq "0,3,WEST"
+    end
+
+    it 'ignores move when a successful place has not occured' do
+      expect(Robot.new.move.report).to eq "The robot as not been sucessfully placed yet"
+    end
+  end
+
   
   describe '#valid_position?' do
     describe 'invalid examples' do
