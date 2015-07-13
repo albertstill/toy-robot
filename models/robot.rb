@@ -1,26 +1,38 @@
 require 'yaml'
 
+# A robot that can be placed on a 5x5 grid. It can move forward and turn left
+# and right. It can report it's position. And it can take commands from a
+# YAML file.
 class Robot
-  @@x_min, @@x_max, @@y_min, @@y_max = 0,5,0,5
-  @@orientations = %w(NORTH EAST SOUTH WEST)
+  def initialize
+    @x_min = 0
+    @x_max = 5
+    @y_min = 0
+    @y_max = 5
+    @orientations = %w(NORTH EAST SOUTH WEST)
+  end
 
   def place(x, y, orientation)
-    @x, @y, @orientation = x, y, orientation if valid_position?(x,y,orientation)
+    if valid_position?(x, y, orientation)
+      @x = x
+      @y = y
+      @orientation = orientation
+    end
     self
   end
 
   def move
-    return self unless has_position?
+    return self unless position?
 
     case @orientation
-    when "NORTH"
-      @y += 1 if valid_y?(@y+1)
-    when "EAST"
-      @x += 1 if valid_x?(@x+1)
-    when "SOUTH"
-      @y -= 1 if valid_y?(@y-1)
-    when "WEST"
-      @x -= 1 if valid_x?(@x-1)
+    when 'NORTH'
+      @y += 1 if valid_y?(@y + 1)
+    when 'EAST'
+      @x += 1 if valid_x?(@x + 1)
+    when 'SOUTH'
+      @y -= 1 if valid_y?(@y - 1)
+    when 'WEST'
+      @x -= 1 if valid_x?(@x - 1)
     end
     self
   end
@@ -51,34 +63,36 @@ class Robot
   end
 
   def report
-    if has_position?
-      "#{@x},#{@y},#{@orientation}"
+    if position?
+      "#{@x}, #{@y}, #{@orientation}"
     else
-      "The robot as not been sucessfully placed yet"
+      'The robot has not been sucessfully placed yet'
     end
   end
 
   private
 
   def turn(times)
-    return unless has_position?
-    @orientation = @@orientations[(@@orientations.index(@orientation) + times ) % @@orientations.length]
+    return unless position?
+    current_index = @orientations.index(@orientation)
+    new_index = (current_index + times) % @orientations.length
+    @orientation = @orientations[new_index]
   end
 
   def valid_position?(x, y, orientation)
     x.is_a?(Integer) && y.is_a?(Integer) && orientation.is_a?(String) &&
-    @@orientations.include?(orientation) && valid_x?(x) && valid_y?(y)
+      @orientations.include?(orientation) && valid_x?(x) && valid_y?(y)
   end
 
   def valid_x?(x)
-    x.between?(@@x_min, @@x_max)
+    x.between?(@x_min, @x_max)
   end
 
   def valid_y?(y)
-    y.between?(@@y_min, @@y_max)
+    y.between?(@y_min, @y_max)
   end
 
-  def has_position?
-    @x != nil && @y != nil && @orientation != nil
+  def position?
+    !@x.nil? && !@y.nil? && !@orientation.nil?
   end
 end
